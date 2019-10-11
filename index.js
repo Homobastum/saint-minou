@@ -39,13 +39,28 @@ SaintMinou.on('ready', () => {
 });
 
 SaintMinou.on('message', msg => {
+    // msg.content = msg.content.replace(/[\u200B-\u200D\uFEFF]/g, ''); // Supprimer les zero-width characters
+    
     // Test du ping
     if (msg.content === 'Ping') {
         msg.reply('Pong !');
     }
 
-    // Reply si SaintMinou
-    if (msg.content.toLowerCase().includes('minou') && msg.author.username !== 'Saint-Minou') {
+    // Reply
+    let mots = [
+        'minou',
+        'chat',
+        'chaton',
+        'chatounet',
+        'miaou', 
+        'ron-ron',
+        'meow',
+        'miaow',
+        'mew',
+        'purr',
+        'nyaa'
+    ];
+    if (messageContient(msg, mots) && msg.author.username !== 'Saint-Minou') {
         msg.reply('Meow !');
     }
 
@@ -103,7 +118,19 @@ function randomActivity() {
         [
             'Music for Cats',
             'LISTENING'
-        ]
+        ],
+        [
+            'des papillons',
+            'WATCHING'
+        ],
+        [
+            'observer les oiseaux',
+            'PLAYING'
+        ],
+        [
+            'chat',
+            'PLAYING'
+        ],
     ];
 
     let noActivity = Math.floor(Math.random() * (activities.length));
@@ -147,6 +174,15 @@ function rssRequest (url, dataPath, dataParseFunction) {
     }).on("error", (err) => {
         console.log("Error: " + err.message);
     });
+}
+
+function messageContient (msg, mots) {
+    let reponse = false;
+    for (let noMot in mots) {
+        reponse |= msg.content.toLowerCase().includes(mots[noMot]);
+    }
+    
+    return reponse;
 }
 
 const dataParse = {
